@@ -82,7 +82,7 @@ G65 P7862 B3 R#4 Z[#11/2] S#8                                       ; Call NC4 m
 ;PRINT OUT DATA
 G100 P221L10 F1 T1 (E:\FTP\TOM\RESULTS\03AUG22.TXT)                 ; Print out data to log file
 G100 P221 L20 F1 (<FMT:.4F,#3>,<FMT:.4F,#11>,<FMT:.4F,#1>)          ; MISSING END
-G100 P221 L11 F1
+G100 P221 L11 F1                                                    ; Close communication with .txt file
 
 N4
 ;----ANALOGUE TRACE AT Z BOTH SIDES-----
@@ -141,7 +141,7 @@ GOTO7                                                               ; Else go to
 N61;PROBE SIC SURFACE - PRE
 T#5M6                                                               ; Tool change to probe
 G54.1000 P7                                                         ; Set workpiece offset to SiC
-G0 X-5 Y-5                                                          ; Rapid Move in XY 5 away from SiC        
+G0 X-5 Y-5                                                          ; Rapid move in XY 5 away from SiC        
 G1 G43 H#2233 Z100 F3000                                            ; Rapid move with positive tool correlation from tool (H#2233) to 100 mm above plane
 
 #635=2                                                              ; Probe Y start position
@@ -162,69 +162,70 @@ G65 P7811 X0                                                        ; Call PROBE
 G100 P221L10 F1 T1 (E:\FTP\TOM\RESULTS\POINT DATA - 03AUG22.TXT)    ; Create/open log .txt file for probe data
 G100 P221 L20 F1(SIC,<FMT:.4F,#1>,<FMT:.4F,#641>)                   ; Write measurement to .txt file
 
-N62                                                                 ; TODO continue from here
-#635=#635+#636
-G65 P7810 Y#635
-#638=#638+1
-G65 P7811 X0
-#[#638]=#135; SAVE MEASURED X POSITION
-#641=#[#638]
-G100 P221 L20 F1(,<FMT:.4F,#641>)
-#639=#639+#[#638]
-IF[#635LT#637]GOTO62
-G100 P221 L20 F1(<ELN:>)
-G100 P221 L11 F1
-#5261=#5261+[#639/#640]
+N62                                                                 
+#635=#635+#636                                                      ; Updating the starting Y position for next probe location
+G65 P7810 Y#635                                                     ; Call PROBE macro - Protected move to updated start position
+#638=#638+1                                                         ; Increase save index position by one
+G65 P7811 X0                                                        ; Call PROBE macro - X single measurement            
+#[#638]=#135                                                        ; Save measured X position
+#641=#[#638]                                                        ; Save measurement for output
+G100 P221 L20 F1(,<FMT:.4F,#641>)                                   ; Write measurement to .txt file
+#639=#639+#[#638]                                                   ; Update running total
+IF[#635LT#637]GOTO62                                                ; If not at end of probing length carry out another measurement        
+G100 P221 L20 F1(<ELN:>)                                            ; Write EOL to .txt file
+G100 P221 L11 F1                                                    ; Close communication with open .txt file
+#5261=#5261+[#639/#640]                                             ; Update X of work coordinates G54.1 P7 with averaged value of measurements
+;G65 P7816 X0 Y0 I40 J40 S107                                       ; Call PROBE macro - Find corner of the SiC and update the work coordinates
+G65 P7810 Z100                                                      ; Call PROBE macro - Protected move in Z direction upwards 100 mm
+M104P2                                                              ; Turn off probe
+#601=#5261                                                          ; Save updated value
 
-;G65 P7816 X0 Y0 I40 J40 S107
-G65 P7810 Z100
-M104P2
-#601=#5261
-
-N7;PROBE SIC
-IF[[#15/#17]NE[FIX[#15/#17]]]GOTO9
-G91G28Z0
-G90
-T#5M6
-G54.1000 P7
-G0 X-5 Y0
-G1 G43 H#2233 Z100 F3000
-#23=5;PROBE Y START POS
-#24=10;PROBE Y STEP DISTANCE
-#25=2;PROBE Y STEPS
-#26=0;FIRST STEP
-M104P1
-G4X2
-N71;MEASUREMENTS
-G65 P7810 Z-3 Y#23
-GOTO72
-IF[#15NE0]GOTO72
-IF[#26NE0]GOTO72
-G65 P7811 X0 S106
-GOTO73
-N72
-G65 P7811 X[#12*#15]
+N7
+;---------------PROBE SIC---------------
+IF[[#15/#17]NE[FIX[#15/#17]]]GOTO9                                  ; Check if the SiC should be probed in between after this cut
+G91 G28 Z0                                                          ; Change to incremental movement and return to home position in Z axis 
+G90                                                                 ; Change to absolute movement method
+T#5M6                                                               ; Tool change to probe
+G54.1000 P7                                                         ; Set workpiece offset to SiC
+G0 X-5 Y0                                                           ; Rapid move in XY to -5 mm in X from origin
+G1 G43 H#2233 Z100 F3000                                            ; Rapid move with positive tool correlation from tool (H#2233) to 100 mm above plane
+#23=5                                                               ; Probe start Y position
+#24=10                                                              ; Probe Y step distance
+#25=2                                                               ; No. probe Y steps
+#26=0                                                               ; Probe count
+M104P1                                                              ; Turn on probe
+G4X2                                                                ; Dwell 2 seconds
+N71;MEASUREMENTS                                            
+G65 P7810 Z-3 Y#23                                                  ; Call PROBE macro - Protected move in YZ direction to start position   
+GOTO72                                                              ; Go to measure            
+IF[#15NE0]GOTO72                                                    ; If No. cuts per probe is not 0 go to measure
+IF[#26NE0]GOTO72                                                    ; If it is not first measurement go to measure
+G65 P7811 X0 S106                                                   ; Call PROBE macro - X single measurement and update work offset coordinates
+GOTO73                                                              
+N72                 
+G65 P7811 X[#12*#15]                                                ; Call PROBE macro - X single measurement
 N73
-#[660+#26]=#135;SAVE MEASURED X POSITION
-M12
-#26=#26+1
-#23=#23+#24
-IF[#26LT#25]GOTO71
-G65 P7810 Z100
-M104P2
-G91G28Z0
-G90
+#[660+#26]=#135                                                     ; Save measured X position
+M12                                                                 ; Pause pre-reading
+#26=#26+1                                                           ; Increment probe count
+#23=#23+#24                                                         ; Update probe start location
+IF[#26LT#25]GOTO71                                                  ; If more measurements are to be carried out go back to measure again
+G65 P7810 Z100                                                      ; Call PROBE macro - Protected move in the Z direction 100 mm 
+M104P2                                                              ; Turn off probe
+G91 G28 Z0                                                          ; Change to incremental movement and return to home position in Z axis                                 
+G90                                                                 ; Change to absolute movement method
 
-G100 P221L10 F1 T1 (E:\FTP\TOM\RESULTS\POINT DATA - 03AUG22.TXT)
-G100 P221 L20 F1(SIC,<FMT:.1F,#15>,<FMT:.4F,#660>, ,FMT:.4F); MISSING END
-G100 P221 L20 F1(FMT:.4F,#663>,<FMT:.4F,#664>,<FMT:.4F,#665>,); MISSING END
-G100 P221 L11 F1
+G100 P221L10 F1 T1 (E:\FTP\TOM\RESULTS\POINT DATA - 03AUG22.TXT)    ; Create/open log .txt file for probe data
+G100 P221 L20 F1(SIC,<FMT:.1F,#15>,<FMT:.4F,#660>, ,FMT:.4F)        ; MISSING END Print data to .txt file
+G100 P221 L20 F1(FMT:.4F,#663>,<FMT:.4F,#664>,<FMT:.4F,#665>,)      ; MISSING END
+G100 P221 L11 F1                                                    ; Close communication to open .txt file
 
 N9
-IF[#1GE#2]GOTO10;RUN NUMBER CHECK 
-GOTO1
+;-------------NO. CUT CHECK-------------
+IF[#1GE#2]GOTO10                                                    ; If No. loops is greater or equal to loop target end program
+GOTO1                                                               ; Go to N1 beginning of cycle
 
 N10
-
-M30
+;---------------PROGRAM END-------------
+M30                                                                 ; End of program
 %

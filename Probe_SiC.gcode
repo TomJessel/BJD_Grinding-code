@@ -20,7 +20,7 @@ G65 P7810 X5 Y5                     ; Call PROBE macro - Protected move in XY di
 G65 P7810 Z10                       ; Call PROBE macro - Protected move in Z direction to 10 mm above SiC
 G65 P7811 Z0 S107                   ; Call PROBE macro - Single Z measurement and change G54.10000 P7 to measurement
 G65 P7810 X-6 Y-6                   ; Call PROBE macro - Protected move in XY direction to offset corner of SiC
-G65 P7810 Z-5                       ; Call PROBE macro - Protected move in Z direction to above SiC shelf
+G65 P7810 Z-3                       ; Call PROBE macro - Protected move in Z direction to above SiC shelf
 G65 P7816 X0 Y0 D6 E6 S107          ; Call PROBE macro - Finding an external corner to update XY coords of SiC cutting face
 G65 P7810 Z20                       ; Call PROBE macro - Protected move in Z direction
 

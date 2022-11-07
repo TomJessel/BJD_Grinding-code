@@ -5,7 +5,7 @@ G0 G17 G40 G49 G54 G90 G98                                          ; Sets movem
                                                                     ; Sets workpiece coord sysem (G54), Set to Absolute Programming (G90), Reset canned cycle (G98)
 
 G100 P221L10 F1 T1 (E:FTP\TOM\RESULTS\03AUG22.TXT)                  ; ??? Creates text file for logging data
-G100 P221 L20 F1 (TOOL NUMBER,CUT DEPTH,LOOP,NC4 LENGTH,NC4 RADIUS) ; MISSING END
+G100 P221 L20 F1 (TOOL NUMBER,CUT DEPTH,LOOP,NC4 LENGTH,NC4 RADIUS<ELN:1>)
 G100 P221 L11 F1
 M12                                                                 ; Pause pre-reading
 M103P2                                                              ; Turn off NC4 for analogue trace
@@ -81,7 +81,7 @@ G65 P7862 B3 R#4 Z[#11/2] S#8                                       ; Call NC4 m
 
 ;PRINT OUT DATA
 G100 P221L10 F1 T1 (E:\FTP\TOM\RESULTS\03AUG22.TXT)                 ; Print out data to log file
-G100 P221 L20 F1 (<FMT:.4F,#3>,<FMT:.4F,#11>,<FMT:.4F,#1>)          ; MISSING END
+G100 P221 L20 F1 (<FMT:.4F,#3>,<FMT:.4F,#11>,<FMT:.4F,#1>,<FMT:.4F,#601>,<FMT:.4F,#604><ELN:1>)
 G100 P221 L11 F1                                                    ; Close communication with .txt file
 
 N4
@@ -216,8 +216,8 @@ G91 G28 Z0                                                          ; Change to 
 G90                                                                 ; Change to absolute movement method
 
 G100 P221L10 F1 T1 (E:\FTP\TOM\RESULTS\POINT DATA - 03AUG22.TXT)    ; Create/open log .txt file for probe data
-G100 P221 L20 F1(SIC,<FMT:.1F,#15>,<FMT:.4F,#660>, ,FMT:.4F)        ; MISSING END Print data to .txt file
-G100 P221 L20 F1(FMT:.4F,#663>,<FMT:.4F,#664>,<FMT:.4F,#665>,)      ; MISSING END
+G100 P221 L20 F1(SIC,<FMT:.1F,#15>,<FMT:.4F,#660>,<FMT:.4F,#661>,<FMT:.4F,#662>)
+G100 P221 L20 F1(FMT:.4F,#663>,<FMT:.4F,#664>,<FMT:.4F,#665>,<ELN:>)
 G100 P221 L11 F1                                                    ; Close communication to open .txt file
 
 N9

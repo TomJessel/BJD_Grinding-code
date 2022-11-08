@@ -88,7 +88,7 @@ N4
 ;----ANALOGUE TRACE AT Z BOTH SIDES-----
 #20=1.                                                              ; Tool beam side
 #21=0.04                                                            ; Tool increment
-M105P1                                                              ; Trigger on NC4 acquisition 
+M105P1                                                              ; Turn on compressed air for NC4
 G4X1                                                                ; Dwell 1 second
 M103P1                                                              ; Trigger NC4    
 N41                                                             
@@ -106,7 +106,7 @@ IF[#21GE-0.01]GOTO41                                                ; If tool in
 #20=#20-2.                                                          ; Minus 2 from tool beam side, so at -1 will scan on other side or -3 when end    
 IF[#20GE-1.]GOTO41                                                  ; If tool beam side is GE -1 go back and measure again
 M103P2                                                              ; Turn off acquisiton for NC4
-M105P2                                                              ; Turn off NC4        
+M105P2                                                              ; Turn off air for NC4       
 M5                                                                  ; Stop spindle
 G91 G28 Z0                                                          ; Change to incremental movement and return to home position in Z axis  
 G90                                                                 ; Change to absolute movement method
@@ -196,7 +196,7 @@ G1 G43 H#2233 Z100 F3000                                            ; Rapid move
 M104P1                                                              ; Turn on probe
 G4X2                                                                ; Dwell 2 seconds
 N71;MEASUREMENTS                                            
-G65 P7810 Z-3 Y#23                                                  ; Call PROBE macro - Protected move in YZ direction to start position   
+G65 P7810 Z-2 Y#23                                                  ; Call PROBE macro - Protected move in YZ direction to start position   
 GOTO72                                                              ; Go to measure            
 IF[#15NE0]GOTO72                                                    ; If No. cuts per probe is not 0 go to measure
 IF[#26NE0]GOTO72                                                    ; If it is not first measurement go to measure

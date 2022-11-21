@@ -1,5 +1,5 @@
-(DATE=DD-MM-YY 20-09-2019 TIME=HH-MM-SS 09:40:56)
-(Program to update workpiece coord system for the SiC G54.1000 P7)
+(DATE=DD-MM-YY 21-11-22 TIME=HH-MM-SS 15:35:00)
+(Program to test new probing cycle for testing)
 %
 O22                                                                 ; Program Number
 G0 G17 G40 G49 G54 G90 G98                                          ; Sets movement to rapid (G0), Selects XY plane (G17), Cancels tool radius & length compensation (G40, G49),
@@ -57,8 +57,9 @@ M104P2                                                              ; Turn off p
 G91 G28 Z0                                                          ; Change to incremental movement and return to home position in Z axis                                 
 G90                                                                 ; Change to absolute movement method
 
-G100 P221L10 F1 T1 (E:\FTP\TOM\RESULTS\POINT DATA - 03AUG22.TXT)    ; Create/open log .txt file for probe data
-G100 P221 L20 F1(SIC,<FMT:.1F,#15>,<FMT:.4F,#660>,<FMT:.4F,#661>,<FMT:.4F,#662>,<FMT:.4F,#663>,<ELN:>)
-G100 P221 L20 F1(REF,<FMT:.1F,#15>,<FMT:.4F,#664>,<FMT:.4F,#665>,<FMT:.4F,#666>,<FMT:.4F,#667>,<ELN:>)
-G100 P221 L20 F1(DIF,<FMT:.1F,#15>,<FMT:.4F,#668>,<FMT:.4F,#669>,<FMT:.4F,#670>,<FMT:.4F,#671>,<ELN:>)
+G100 P221 L10 F1 T1 (E:\FTP\TOM\RESULTS\POINT DATA - 22NOV22.TXT)   ; Create/open log .txt file for probe data
+G100 P221 L20 F1 (<#2400>,<#2401>,<ELN:>)                           ; Attempt to print out to .txt file both date and time
+G100 P221 L20 F1 (SIC,<FMT:.1F,#15>,<FMT:.4F,#660>,<FMT:.4F,#661>,<FMT:.4F,#662>,<FMT:.4F,#663>,<ELN:>)
+G100 P221 L20 F1 (REF,<FMT:.1F,#15>,<FMT:.4F,#664>,<FMT:.4F,#665>,<FMT:.4F,#666>,<FMT:.4F,#667>,<ELN:>)
+G100 P221 L20 F1 (DIF,<FMT:.1F,#15>,<FMT:.4F,#668>,<FMT:.4F,#669>,<FMT:.4F,#670>,<FMT:.4F,#671>,<ELN:>)
 G100 P221 L11 F1  

@@ -5,14 +5,13 @@ O19                                 ; Program Number
 G0 G17 G40 G49 G54 G90 G98          ; Sets movement to rapid (G0), Selects XY plane (G17), Cancels tool radius & length compensation (G40, G49),
                                     ; Sets workpiece coord sysem (G54), Set to Absolute Programming (G90), Reset canned cycle (G98)
 M104P2                              ; Turn off probe
-#1=-5                               ; Set measure depth to -5 mm
 G28 G91 Z0                          ; Change to incremental movement and return to home position in Z axis  
 G90                                 ; Change to absolute movement method
 
 T1M6                                ; Tool change to tool 1 - probe
 G54.1000 P7                         ; Set workpiece coords to SiC 
 G43 H#2233 G1 Z180 F5000            ; Apply positive tool offset and linear move in the Z direction
-M104P1                              ; Turn of probe
+M104P1                              ; Turn on probe
 G4 X2                               ; Dwell 2 seconds
 
 G54.1000 P7                         ; Set workpiece coords to SiC      

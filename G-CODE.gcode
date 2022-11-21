@@ -132,6 +132,14 @@ G1 G43 H#2233 Z100 F3000                                            ; Rapid move
 
 M104P1                                                              ; Turn on probe
 G4X2                                                                ; Dwell 2 seconds
+
+N62 ; Set Z height
+G0 X5 Y10
+G65 P7810 Z10
+G65 P7811 Z0 S107
+G65 P7810 Z50
+
+G0 X-5 Y-5 
 G65 P7810 Z-2 Y#635                                                 ; Call PROBE macro - Protected move to start position for probing
 G65 P7811 X0                                                        ; Call PROBE macro - X single measurement
 #[#638]=#135                                                        ; Save measured X position
@@ -141,7 +149,7 @@ G65 P7811 X0                                                        ; Call PROBE
 G100 P221L10 F1 T1 (E:\FTP\TOM\RESULTS\POINT DATA - 03AUG22.TXT)    ; Create/open log .txt file for probe data
 G100 P221 L20 F1(SIC,<FMT:.4F,#1>,<FMT:.4F,#641>)                   ; Write measurement to .txt file
 
-N62                                                                 
+N63                                                                 
 #635=#635+#636                                                      ; Updating the starting Y position for next probe location
 G65 P7810 Y#635                                                     ; Call PROBE macro - Protected move to updated start position
 #638=#638+1                                                         ; Increase save index position by one
@@ -150,7 +158,7 @@ G65 P7811 X0                                                        ; Call PROBE
 #641=#[#638]                                                        ; Save measurement for output
 G100 P221 L20 F1(,<FMT:.4F,#641>)                                   ; Write measurement to .txt file
 #639=#639+#[#638]                                                   ; Update running total
-IF[#635LT#637]GOTO62                                                ; If not at end of probing length carry out another measurement        
+IF[#635LT#637]GOTO63                                                ; If not at end of probing length carry out another measurement        
 G100 P221 L20 F1(<ELN:>)                                            ; Write EOL to .txt file
 G100 P221 L11 F1                                                    ; Close communication with open .txt file
 #5261=#5261+[#639/#640]                                             ; Update X of work coordinates G54.1 P7 with averaged value of measurements

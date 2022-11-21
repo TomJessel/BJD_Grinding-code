@@ -5,7 +5,7 @@ G0 G17 G40 G49 G54 G90 G98                                          ; Sets movem
                                                                     ; Sets workpiece coord sysem (G54), Set to Absolute Programming (G90), Reset canned cycle (G98)
 
 G100 P221L10 F1 T1 (E:FTP\TOM\RESULTS\03AUG22.TXT)                  ; ??? Creates text file for logging data
-G100 P221 L20 F1 (TOOL NUMBER,CUT DEPTH,LOOP,NC4 LENGTH,NC4 RADIUS<ELN:1>)
+G100 P221 L20 F1 (TOOL NUMBER,CUT DEPTH,LOOP,PROBE X,NC4 RADIUS<ELN:1>)
 G100 P221 L11 F1
 M12                                                                 ; Pause pre-reading
 M103P2                                                              ; Turn off NC4 for analogue trace
@@ -76,7 +76,7 @@ N3
 T#3M6                                                               ; Tool change to grinding tool
 G53                                                                 ; Set/Move machine coord system    
 G4X10                                                               ; Dwell for 10 seconds    
-G65 P7862 B3 R#4 Z[#11/2] S#8                                       ; Call NC4 macro - Tool length and radius setting 
+G65 P7862 B3 R#4 Z[#11/2] S#8 H1                                    ; Call NC4 macro - Tool length and radius setting 
 #604=#[6300+#3]                                                     ; Save tool radius offset
 
 ;PRINT OUT DATA

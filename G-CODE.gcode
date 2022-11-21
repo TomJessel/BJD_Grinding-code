@@ -112,27 +112,6 @@ G91 G28 Z0                                                          ; Change to 
 G90                                                                 ; Change to absolute movement method
 
 GOTO6                                                               ; SKIP GLASS CUTTING
-N5
-;-------------GLASS CUTTING-------------
-IF[#15EQ0]GOTO6
-IF[[#15/#17]EQ[FIX[#15/#17]]]GOTO51
-GOTO6
-N51;CUT GLASS
-G54.1000 P6
-G90 G0 X-#4 Y-#4
-G0 G43 H#2233 Z50 F5000
-M3 S#8
-M8
-G1 Z-3
-G01 X[#13-#[6300+#3]] F#10
-;CUTTING PASS
-G1 Y70
-G40
-G1 Z50 F5000 M9
-M5
-M12
-#13=#13+#12;INCREMENT CUT DEPTH
-G91G28Z0
 
 N6
 ;--------PROBE SIC - PRE CUTTING--------

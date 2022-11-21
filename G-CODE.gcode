@@ -196,7 +196,7 @@ G90                                                                 ; Change to 
 
 G100 P221L10 F1 T1 (E:\FTP\TOM\RESULTS\POINT DATA - 03AUG22.TXT)    ; Create/open log .txt file for probe data
 G100 P221 L20 F1(SIC,<FMT:.1F,#15>,<FMT:.4F,#660>,<FMT:.4F,#661>,<FMT:.4F,#662>)
-G100 P221 L20 F1(FMT:.4F,#663>,<FMT:.4F,#664>,<FMT:.4F,#665>,<ELN:>)
+G100 P221 L20 F1(<FMT:.4F,#663>,<FMT:.4F,#664>,<FMT:.4F,#665>,<ELN:>)
 G100 P221 L11 F1                                                    ; Close communication to open .txt file
 
 N9

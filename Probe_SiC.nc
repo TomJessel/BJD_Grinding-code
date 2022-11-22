@@ -1,4 +1,4 @@
-(DATE=DD-MM-YY 20-09-2019 TIME=HH-MM-SS 09:40:56)
+(DATE=20-09-2019 TIME=09:40:56 - Set Work Coords)
 (Program to update workpiece coord system for the SiC G54.1000 P7)
 %
 O19                                 ; Program Number

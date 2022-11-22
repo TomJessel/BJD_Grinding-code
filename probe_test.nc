@@ -63,9 +63,12 @@ G90                                                                 ; Change to 
 
 G100 P221 L10 F1 T1 (E:\FTP\TOM\RESULTS\Probe_SiC.csv)              
 G100 P221 L20 F1 (Date,<FMT:.1F,#2400>,Time,<FMT:.1F,#2401>,<ELN:>)                          
+G100 P221 L20 F1 (<ELN:>)
+G100 P221 L20 F1 (,Cut No,P1,P2,P3,P4,<ELN:>)
 G100 P221 L20 F1 (SIC,<FMT:.1F,#15>,<FMT:.4F,#660>,<FMT:.4F,#661>,<FMT:.4F,#662>,<FMT:.4F,#663>,<ELN:>)
 G100 P221 L20 F1 (REF,<FMT:.1F,#15>,<FMT:.4F,#664>,<FMT:.4F,#665>,<FMT:.4F,#666>,<FMT:.4F,#667>,<ELN:>)
 G100 P221 L20 F1 (DIF,<FMT:.1F,#15>,<FMT:.4F,#668>,<FMT:.4F,#669>,<FMT:.4F,#670>,<FMT:.4F,#671>,<ELN:>)
+G100 P221 L20 F1 (<ELN:>)
 G100 P221 L11 F1  
 M30
 %

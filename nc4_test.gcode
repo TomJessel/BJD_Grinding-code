@@ -1,7 +1,7 @@
 (DATE=DD-MM-YY 21-11-22 TIME=HH-MM-SS 15:35:00)
 (Test NC4 program changes)
 %
-O19                                 
+O22                                 
 G0 G17 G40 G49 G54 G90 G98      
                                     
 M104P2                              

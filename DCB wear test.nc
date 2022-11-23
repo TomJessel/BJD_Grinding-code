@@ -2,39 +2,40 @@
 %
 O21
 G0 G17 G40 G49 G54 G90 G98
+;OUTPUT FILE CREATION
+G100 P221 L10 F1 T1 (E:FTP\TOM\RESULTS\DCB wear test.csv)
 
 M12
 M103P2
 M105P2
 M107P2
-
-#1=0        ; LOOP COUNTER
-#2=400      ; LOOP TARGET
-#3=6        ; BURR TOOL NUMBER
-#4=1.3      ; BURR TOOL DIAMETER
-#5=1        ; PROBE TOOL NUMBER
-#6=20       ; WORKPIECE Y LENGTH
+; GRINDING PARAMETERS
+#1 = 0        ; LOOP COUNTER
+#2 = 400      ; LOOP TARGET
+#3 = 6        ; BURR TOOL NUMBER
+#4 = 1.3      ; BURR TOOL DIAMETER
+#5 = 1        ; PROBE TOOL NUMBER
+#6 = 20       ; WORKPIECE Y LENGTH
 ;#7
-#8=24000    ; SPINDLE SPEED(CUT)
-#9=3000     ; SPINDLE SPEED(OTHER)
-#10=60      ; FEED RATE(CUT)
-#11=5.      ; Z CUT DEPTH
-#12=0.03    ; X CUT DEPTH
+#8 = 24000    ; SPINDLE SPEED(CUT)
+#9 = 3000     ; SPINDLE SPEED(OTHER)
+#10 = 60      ; FEED RATE(CUT)
+#11 = 5.      ; Z CUT DEPTH
+#12 = 0.03    ; X CUT DEPTH
 ;#13
 ;#14
-#15=0       ; TOTAL CUTS
-#16=0       ; CUT REPEAT COUNTER
-#17=400     ; SIC CUTS PER PROBE
-#18=1       ; NO. OF CUTS BEFORE MEASURE
+#15 = 0       ; TOTAL CUTS
+#16 = 0       ; CUT REPEAT COUNTER
+#17 = 400     ; SIC CUTS PER PROBE
+#18 = 1       ; NO. OF CUTS BEFORE MEASURE
 ;#19=MEASURE TOOL Z HEIGHT
 ;#20=MEASURE TOOL BEAM SIDE
 ;#21=MEASURE TOOL INCREMENT
 ;#22=MEASURE TOOL Y POSITION
-
-#23=4       ; PROBE Y START POS
-#24=4       ; PROBE Y STEP DISTANCE
-#25=4       ; PROBE Y STEPS
-#26=0      ; PROBE INDEX
+;#23 = 4      ; PROBE Y START POS
+;#24 = 4      ; PROBE Y STEP DISTANCE
+;#25 = 4      ; PROBE Y STEPS
+;#26 = 0      ; PROBE INDEX
 
 ;Date & Time
 #40 = #2400/10000               ; Year
@@ -44,14 +45,11 @@ M107P2
 #44 = [#43-FIX[#43]]*100        ; Minute
 #45 = ROUND[[#44-FIX[#44]]*100] ; Second
 
-; Output file
-G100 P221 L10 F1 T1 (E:FTP\TOM\RESULTS\DCB wear test.csv)
+; Output file headings
 G100 P221 L20 F1 (<ELN:1>)
 G100 P221 L20 F1 (DATE,<FMT:.2D,#42>-<FMT:.2D,#41>-<FMT:.4D,#40><ELN:1>)
 G100 P221 L20 F1 (TIME,<FMT:.2D,#43>:<FMT:.2D,#44>:<FMT:.2D,#45><ELN:1>)
 G100 P221 L20 F1 (<ELN:1>)
-G100 P221 L20 F1 (Cut No,NC4 Radius,P1,P2,P3,P4)
-G100 P221 L11 F1
 
 GOTO3
 N1
@@ -132,12 +130,11 @@ G54.1000 P7
 G0 X-5 Y-5  
 G1 G43 H#2233 Z100 F3000
 
-#635=2                                                              ; Probe Y start position
-#636=4                                                              ; Probe Y step distance
-#637=18                                                             ; Probe Y end Position
-#638=642                                                            ; Measure position store start
-#639=0                                                              ; Running total
-#640=[[#637-#635]/#636]+1                                           ; Number of measurements
+#635 = 4                                       ; Probe Y start position
+#636 = 4                                       ; Probe Y step distance
+#637 = 16                                      ; Probe Y end Position
+#639 = 0                                       ; Running total
+#640 = [[#637-#635]/#636]+1                    ; Number of measurements
 
 M104P1
 G4X2
@@ -162,20 +159,20 @@ IF[#635LT#637]GOTO63
 #5261=#5261+[#639/#640]
 G65 P7810 Z100
 M104P2
-#601=#5261                                                          ; Measured start probe location
+#601=#5261                                      ; Measured start probe location
 
 N7
 ;---------------PROBE SIC---------------
-IF[[#15/#17]NE[FIX[#15/#17]]]GOTO9                                  ; Check if the SiC should be probed in between after this cut
-G91 G28 Z0                                                          ; Change to incremental movement and return to home position in Z axis 
-G90                                                                 ; Change to absolute movement method
-T#5M6                                                               ; Tool change to probe
+IF[[#15/#17]NE[FIX[#15/#17]]]GOTO9
+G91 G28 Z0
+G90
+T#5M6
 
-#23=4                                                               ; Probe start Y position
-#24=4                                                               ; Probe Y step distance
-#25=4                                                               ; No. probe Y steps
-#26=0                                                               ; Probe count
-#659 = 0                                                            ; Avg ref surface
+#23=4                                           ; Probe start Y position
+#24=4                                           ; Probe Y step distance
+#25=4                                           ; No. probe Y steps
+#26=0                                           ; Probe count
+#659 = 0                                        ; Avg ref surface
 
 M104P1
 G4X2
@@ -219,9 +216,8 @@ G90
 
 N9
 ;PRINT OUT DATA
-G100 P221 L10 F1 T1 (E:\FTP\TOM\RESULTS\DCB wear test.csv)
+G100 P221 L20 F1 (Cut No,NC4 Radius,P1,P2,P3,P4)
 G100 P221 L20 F1 (<FMT:.4F,#1>,<FMT:.4F,#604>,<FMT:.4F,#668>,<FMT:.4F,#669>,<FMT:.4F,#670>,<FMT:.4F,#671>,<ELN:>)
-G100 P221 L11 F1
 
 ;-------------NO. CUT CHECK-------------
 IF[#1GE#2]GOTO10
@@ -229,5 +225,6 @@ GOTO1
 
 N10
 ;---------------PROGRAM END-------------
+G100 P221 L11 F1
 M30
 %

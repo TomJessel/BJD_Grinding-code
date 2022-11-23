@@ -1,10 +1,10 @@
-(DATE=DD-MM-YY 02-02-2021 TIME=HH-MM-SS 11:29:56)
+(DATE=02-02-2021 TIME=11:29:56 - Wear test with AE)
 %
 O21                                                                 ; Program number
 G0 G17 G40 G49 G54 G90 G98                                          ; Sets movement to rapid (G0), Selects XY plane (G17), Cancels tool radius & length compensation (G40, G49),
                                                                     ; Sets workpiece coord sysem (G54), Set to Absolute Programming (G90), Reset canned cycle (G98)
 
-G100 P221L10 F1 T1 (E:FTP\TOM\RESULTS\03AUG22.TXT)                  ; ??? Creates text file for logging data
+G100 P221 L10 F1 T1 (E:FTP\TOM\RESULTS\03AUG22.TXT)                  ; ??? Creates text file for logging data
 G100 P221 L20 F1 (TOOL NUMBER,CUT DEPTH,LOOP,PROBE X,NC4 RADIUS<ELN:1>)
 G100 P221 L11 F1
 M12                                                                 ; Pause pre-reading

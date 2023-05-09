@@ -36,6 +36,8 @@ M107P2
 ;#24 = 4      ; PROBE Y STEP DISTANCE
 ;#25 = 4      ; PROBE Y STEPS
 ;#26 = 0      ; PROBE INDEX
+#29 = 1      ; NO. OF CUTS BEFORE OWL MEASURE
+#30 = 1      ; OWL BOOL
 
 ;Date & Time
 #40 = #2400/10000               ; Year
@@ -118,6 +120,11 @@ M5
 G91 G28 Z0
 G90
 
+N5
+;-------------OWL SCAN---------------
+IF[[#15/#29]NE[FIX[#15/#29]]]GOTO6
+G100 P100       ; OWL MACRO
+#30 = 1         ; RESET OWL BOOL
 GOTO6
 
 N6

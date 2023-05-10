@@ -1,16 +1,25 @@
-O100
-G0 G17 G40 G49 G54 G90 G98
+O0099 (OWL - RUN)
+; OWL subprogram to run a single OWL measurement manually
 M9
 
+M12
+M103P2
+M105P2
+M107P2
+
+; #30 = 1
+
+M6T6
+
+G54.1000 P15
+
 ; Move to the start position above OWL
-G90 G0 X592.3450 Y 83.2375
-M01
+G90 G0 X0 Y0
 
 ; Move down to OWL in Z
-G0 Z180
-M01
+G1 G43 H#2233 Z100 F5000
 
-G01 Z154.4716 F5000
+G01 Z0 F2000
 M01
 
 ; Open solenoid for OWL 
@@ -21,10 +30,13 @@ M01
 ; Start spindle
 M3 S3000
 
-; Continue spindle until #30 is changed from 1
-WHILE [#30EQ1]DO1
-G4 X2
-END1
+; Wait 30s to record with OWL
+M01
+G4 X30
+; ; Continue spindle until #30 is changed from 1
+; WHILE [#30EQ1]DO1
+; G4 X2
+; END1
 
 ; Stop spindle 
 M5
@@ -36,4 +48,5 @@ G01 Z180
 M01
 G28 G91 Z0
 
-M30
+M99
+%

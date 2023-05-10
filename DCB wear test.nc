@@ -122,7 +122,9 @@ G90
 
 N5
 ;-------------OWL SCAN---------------
+IF[#16EQ0]GOTO51
 IF[[#15/#29]NE[FIX[#15/#29]]]GOTO6
+N51
 G65 P0099       ; OWL MACRO
 #30 = 1         ; RESET OWL BOOL
 GOTO6

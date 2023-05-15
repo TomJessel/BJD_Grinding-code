@@ -3,7 +3,7 @@
 O21
 G0 G17 G40 G49 G54 G90 G98
 ;OUTPUT FILE CREATION
-G100 P221 L10 F1 T1 (E:\FTP\TOM\RESULTS\221128 DCB Setup.csv)
+G100 P221 L10 F1 T1 (E:\FTP\TOM\RESULTS\230515-OWL_Probe_test.csv)
 
 M12
 M103P2
@@ -37,7 +37,6 @@ M107P2
 ;#25 = 4      ; PROBE Y STEPS
 ;#26 = 0      ; PROBE INDEX
 #29 = 1      ; NO. OF CUTS BEFORE OWL MEASURE
-#30 = 1      ; OWL BOOL
 
 ;Date & Time
 #40 = #2400/10000               ; Year
@@ -77,7 +76,7 @@ G40
 G1 Z50 F5000
 M9
 M5
-M1   
+; M1   
 IF[#1GE#2]GOTO3
 #1=#1+1                                                             ; Increment loop counter    
 #15=#15+1                                                           ; Increment total cuts    
@@ -90,8 +89,8 @@ N3
 T#3M6
 G53 
 G4X10   
-G65 P7862 B3 R#4 Z[#11/2] S#8 H1
-#604=#[6300+#3]                                                     ; Measured tool radius
+G65 P7862 B3 R#4 Z[#11/2] S#8 H1 D99 ; changed to save to T99
+#604=#[6300+99]; changed to 99 from #3                                                     ; Measured tool radius
 
 N4
 ;----ANALOGUE TRACE AT Z BOTH SIDES-----
@@ -126,7 +125,6 @@ IF[#16EQ0]GOTO51
 IF[[#15/#29]NE[FIX[#15/#29]]]GOTO6
 N51
 G65 P0099       ; OWL MACRO
-#30 = 1         ; RESET OWL BOOL
 GOTO6
 
 N6

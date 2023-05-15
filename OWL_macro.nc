@@ -25,18 +25,13 @@ M01
 ; Open solenoid for OWL 
 M104P1
 G4 X2
-M01
 
 ; Start spindle
 M3 S3000
 
-; Wait 30s to record with OWL
 M01
-G4 X30
-; ; Continue spindle until #30 is changed from 1
-; WHILE [#30EQ1]DO1
-; G4 X2
-; END1
+; RUN OWL SCAN
+G4 X120
 
 ; Stop spindle 
 M5

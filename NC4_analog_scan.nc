@@ -1,6 +1,6 @@
 (DATE=10-01/2024 TIME=13:28:10 - Scan Tool with NC4 and oscilloscope)
 %
-O22
+O23
 G0 G17 G40 G49 G54 G90 G98
 
 #4 = 1.3      ; BURR TOOL DIAMETER

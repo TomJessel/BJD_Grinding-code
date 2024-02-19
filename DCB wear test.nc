@@ -9,6 +9,8 @@ M12
 M103P2
 M105P2
 M107P2
+M104P2
+
 ; GRINDING PARAMETERS
 #1 = 0        ; LOOP COUNTER
 #2 = 400      ; LOOP TARGET
@@ -174,59 +176,99 @@ M104P2
 
 N7
 ;---------------PROBE SIC---------------
+
+; Check whether to probe after this cut if not then skip
 IF[[#15/#17]NE[FIX[#15/#17]]]GOTO9
 G91 G28 Z0
 G90
+
+; Tool change to probe
 T#5M6
 
+; Probe Parameters
 #23=4                                           ; Probe start Y position
 #24=4                                           ; Probe Y step distance
 #25=4                                           ; No. probe Y steps
 #26=0                                           ; Probe count
 #659 = 0                                        ; Avg ref surface
 
+; Turn on probe
 M104P1
 G4X1
 
 ;REFERENCE SURFACE
+
+; Ref Coords for lower untouched ref surface 
 G54.1000 P6
-G0 X-5 Y0
+; Move to start position
+G0 X-5 Y#23
 G1 G43 H#2233 Z100 F3000
+
 N74
-G65 P7810 Z-2 Y#23
+; Protected move 
+G65 P7810 Z-2
+; Single probe measurement 
 G65 P7811 X0
-#[660+#26] = #135 + #5241
+; Save measurement
+#[660+#26] = #135 + #5241 
 #659 =  #659 + #[660+#26]
+; Pause pre-read
 M12
-#26 = #26+1
-#23 = #23+#24
+; Check if all measurements taken
 IF[#26LT[#25]]GOTO74
+; Increment probe count
+#26 = #26+1 (move below check)
+#23 = #23+#24
+
+; Protected move away from part
 G65 P7810 Z50
+; Calculate average ref surface X-coord
 #659 = #659/#25
 
 ;CUTTING SURFACE
+; Ref Coords for machined surface
 #23 = 1
+#
 G54.1000 P7
-G0 X-5 Y0
-N71;MEASUREMENTS                                            
-G65 P7810 Z-2 Y#23                                                          
+
+; Move to start position
+G0 X-5 Y#23
+
+N71                                           
+; Protected move 
+G65 P7810 Z-2                                                          
+
 N72                 
+; Single probe measurement at machined surface (#12 - DOC, #15 - Total No Cuts)
 G65 P7811 X[#12*#15]
 N73
+; Save measurement
 #[660+#26]=#135 + #5261
 #[660+#26+#25] = #[660+#26] - #659
+; Pause pre-read
 M12
+; Increment probe count
+; Check if all measurements taken
+IF[#26LT[#25*2]]GOTO71 (change to IF[#26LE[#25]]GOTO71)
 #26=#26+1
 #23=#23+#24
-IF[#26LT[#25*2]]GOTO71
+
+; Protected move away from part
 G65 P7810 Z100
 
+; Turn off probe
 M104P2
 G91 G28 Z0                               
 G90
 
 N9
 ;PRINT OUT DATA
+; #1 - Cut No
+; #604 - NC4 Radius measurement
+; #668 - Relative probe measurement between ref and cut surface at P1
+; #669 - Relative probe measurement between ref and cut surface at P2
+; #670 - Relative probe measurement between ref and cut surface at P3
+; #671 - Relative probe measurement between ref and cut surface at P4
 G100 P221 L20 F1 (<FMT:.1F,#1>,<FMT:.4F,#604>,<FMT:.4F,#668>,<FMT:.4F,#669>,<FMT:.4F,#670>,<FMT:.4F,#671><ELN:>)
 
 ;-------------NO. CUT CHECK-------------
